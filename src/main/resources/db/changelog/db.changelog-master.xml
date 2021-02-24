@@ -13,4 +13,5 @@
     ">
   <include file="db/schema/schema.sql"></include>
   <include file="db/changelog/db.changelog-1.0.xml"></include>
+  <include file="db/changelog/db.changelog-2.0.xml"></include>
 </databaseChangeLog>

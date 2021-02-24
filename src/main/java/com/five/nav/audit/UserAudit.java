@@ -28,7 +28,7 @@ public class UserAudit {
   @GeneratedValue(strategy = GenerationType.AUTO)
   long id;
 
-  @Enumerated(EnumType.STRING)
+  @Enumerated(EnumType.ORDINAL)
   Action action;
 
   @Column(name = "timestamp")

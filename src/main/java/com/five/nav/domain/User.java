@@ -17,13 +17,17 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "user")
+@Table(name = "_user")
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
   @Id
@@ -36,7 +40,7 @@ public class User {
   @Column(name = "lastname")
   String lastname;
 
-  @Column(name = "email")
+  @Column(name = "email", unique = true)
   @Email
   String email;
 

@@ -11,5 +11,10 @@
     http://www.liquibase.org/xml/ns/dbchangelog
     http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd
     ">
-
+  <changeSet  id="1" author="mateo">
+    <modifyDataType catalogName="nav" tableName="user_audit" columnName="timestamp" newDataType="timestamp with time zone"></modifyDataType>
+  </changeSet>
+  <changeSet id="2" author="mateo">
+    <modifyDataType catalogName="nav" tableName="article_audit" columnName="timestamp" newDataType="timestamp with time zone"></modifyDataType>
+  </changeSet>
 </databaseChangeLog>

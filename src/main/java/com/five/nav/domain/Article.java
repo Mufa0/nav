@@ -34,7 +34,7 @@ public class Article {
   @Column(name = "url")
   String url;
 
-  @Enumerated(EnumType.STRING)
+  @Enumerated(EnumType.ORDINAL)
   @Column(name = "status")
   ArticleStatus status;
 
