@@ -4,6 +4,7 @@ import com.five.nav.controller.UserControllerInterface;
 import com.five.nav.request.UserRequest;
 import com.five.nav.response.UserResponse;
 import com.five.nav.service.UserServiceInterface;
+import java.util.List;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,5 +20,10 @@ public class UserController implements UserControllerInterface {
   @Override
   public UserResponse registerUser(@Valid UserRequest user) {
     return userService.registerUser(user);
+  }
+
+  @Override
+  public List<UserResponse> getAllUsers() {
+    return userService.getAllUsers();
   }
 }

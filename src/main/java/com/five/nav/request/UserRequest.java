@@ -25,11 +25,12 @@ public class UserRequest {
   String lastname;
 
   @Email(message = EMAIL_NOT_VALID)
+  @NotBlank(message = EMAIL_NOT_VALID)
   String email;
 
   @NotBlank(message = PASSWORD_NOT_VALID)
   String password;
 
-
+  String role;
 
 }
