@@ -4,10 +4,10 @@ DROP TYPE IF EXISTS "article_status" CASCADE;
 DROP TYPE IF EXISTS "role" CASCADE;
 DROP TYPE IF EXISTS "action" CASCADE;
 
-DROP TABLE IF EXISTS "user" CASCADE;
+DROP TABLE IF EXISTS "_user" CASCADE;
 DROP TABLE IF EXISTS "article" CASCADE;
 DROP TABLE IF EXISTS "user_liked_articles" CASCADE;
-DROP TABLE IF EXISTS "group" CASCADE;
+DROP TABLE IF EXISTS "_group" CASCADE;
 DROP TABLE IF EXISTS "user_audit" CASCADE;
 DROP TABLE IF EXISTS "article_audit" CASCADE;
 
@@ -63,7 +63,7 @@ CREATE TABLE "user_liked_articles" (
   "article_id" bigint NOT NULL
 );
 
-CREATE TABLE "group" (
+CREATE TABLE "_group" (
   "id" SERIAL PRIMARY KEY,
   "name" varchar NOT NULL,
   "user_id" bigint NOT NULL,
@@ -81,6 +81,7 @@ CREATE TABLE "article_audit" (
   "id" SERIAL PRIMARY KEY,
   "user_id" bigint NOT NULL,
   "article_id" bigint NOT NULL,
+  "action" action NOT NULL,
   "timestamp" timestamp
 );
 
@@ -90,9 +91,9 @@ ALTER TABLE "user_liked_articles" ADD FOREIGN KEY ("user_id") REFERENCES "_user"
 
 ALTER TABLE "user_liked_articles" ADD FOREIGN KEY ("article_id") REFERENCES "article" ("id");
 
-ALTER TABLE "group" ADD FOREIGN KEY ("user_id") REFERENCES "_user" ("id");
+ALTER TABLE "_group" ADD FOREIGN KEY ("user_id") REFERENCES "_user" ("id");
 
-ALTER TABLE "group" ADD FOREIGN KEY ("article_id") REFERENCES "article" ("id");
+ALTER TABLE "_group" ADD FOREIGN KEY ("article_id") REFERENCES "article" ("id");
 
 ALTER TABLE "user_audit" ADD FOREIGN KEY ("user_id") REFERENCES "_user" ("id");
 

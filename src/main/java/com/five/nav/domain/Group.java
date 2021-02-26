@@ -13,7 +13,7 @@ import lombok.Builder;
 import lombok.Data;
 
 @Entity
-@Table(name = "group")
+@Table(name = "_group")
 @Data
 @Builder
 public class Group {
