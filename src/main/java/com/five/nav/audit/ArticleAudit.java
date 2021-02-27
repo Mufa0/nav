@@ -16,26 +16,32 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "article_audit")
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ArticleAudit {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   long id;
 
-  @Enumerated(EnumType.ORDINAL)
+  @Enumerated(EnumType.STRING)
   Action action;
 
   @Column(name = "timestamp")
   @Temporal(TemporalType.TIMESTAMP)
   Date timestamp;
 
+  @Column(name = "message")
+  String message;
 
   @ManyToOne
   @JoinColumn(name = "user_id")
@@ -44,5 +50,7 @@ public class ArticleAudit {
   @ManyToOne
   @JoinColumn(name = "article_id")
   Article article;
+
+
   
 }

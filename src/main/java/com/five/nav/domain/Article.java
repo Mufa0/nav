@@ -15,13 +15,17 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "article")
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Article {
 
   @Id
@@ -31,10 +35,10 @@ public class Article {
   @Column(name = "title")
   String title;
 
-  @Column(name = "url")
-  String url;
+  @Column(name = "content")
+  String content;
 
-  @Enumerated(EnumType.ORDINAL)
+  @Enumerated(EnumType.STRING)
   @Column(name = "status")
   ArticleStatus status;
 

@@ -1,6 +1,7 @@
 package com.five.nav.exception.controller;
 
 import com.five.nav.exception.UserAlreadyExistsException;
+import com.five.nav.exception.UserNotAllowedForThisActionException;
 import com.five.nav.exception.UserNotAuthenticatedException;
 import com.five.nav.exception.UserNotFoundException;
 import java.util.Locale;
@@ -18,6 +19,8 @@ public class UserExceptionController {
   private static final String NOT_FOUND_MESSAGE = "Exception.user.notFound";
   private static final String ALREADY_EXISTS_MESSAGE = "Exception.user.userExists";
   private static final String NOT_AUTHENTICATED_MESSAGE = "Exception.user.notAuthenticated";
+  private static final String NOT_ALLOWED_MESSAGE = "Exception.user.notAllowedAction";
+
   MessageSource messageSource;
 
   @ExceptionHandler(value = UserNotFoundException.class)
@@ -40,6 +43,13 @@ public class UserExceptionController {
       Locale locale) {
     return new ResponseEntity<>(messageSource.getMessage(NOT_AUTHENTICATED_MESSAGE,
         new Object[]{e.getEmail()}, locale), HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler(value = UserNotAllowedForThisActionException.class)
+  public ResponseEntity<String> serNotAuthenticatedHandler(UserNotAllowedForThisActionException e,
+      Locale locale) {
+    return new ResponseEntity<>(messageSource.getMessage(NOT_ALLOWED_MESSAGE,
+        new Object[]{e.getUserId()}, locale), HttpStatus.BAD_REQUEST);
   }
 
 

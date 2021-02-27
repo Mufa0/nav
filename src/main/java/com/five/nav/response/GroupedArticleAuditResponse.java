@@ -8,19 +8,12 @@ import lombok.NoArgsConstructor;
 
 @Builder
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class UserResponse {
+@AllArgsConstructor
+public class GroupedArticleAuditResponse {
 
-    long id;
+  long articleId;
 
-    String name;
+  List<ArticleAuditResponse> audits;
 
-    String lastname;
-
-    String email;
-
-    List<ArticleResponse> articles;
-
-    //Rest of response object will be added
 }

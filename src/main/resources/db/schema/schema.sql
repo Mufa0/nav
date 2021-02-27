@@ -53,7 +53,7 @@ CREATE TABLE "article" (
   "id" SERIAL PRIMARY KEY,
   "author"  bigint NOT NULL,
   "title" varchar NOT NULL,
-  "url" varchar NOT NULL,
+  "content" text NOT NULL,
   "status" article_status NOT NULL
 );
 
@@ -74,6 +74,7 @@ CREATE TABLE "user_audit" (
   "id" SERIAL PRIMARY KEY,
   "user_id" bigint NOT NULL,
   "action" action NOT NULL,
+  "message" varchar,
   "timestamp" timestamp
 );
 
@@ -82,6 +83,7 @@ CREATE TABLE "article_audit" (
   "user_id" bigint NOT NULL,
   "article_id" bigint NOT NULL,
   "action" action NOT NULL,
+  "message" varchar,
   "timestamp" timestamp
 );
 
