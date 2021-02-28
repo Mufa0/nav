@@ -43,7 +43,7 @@ CREATE TABLE "_user" (
   "id" SERIAL PRIMARY KEY,
   "name" varchar NOT NULL,
   "lastname" varchar NOT NULL,
-  "email" varchar NOT NULL,
+  "email" varchar NOT NULL UNIQUE,
   "password" varchar NOT NULL,
   "status" user_status NOT NULL,
   "role" role NOT NULL
@@ -70,12 +70,18 @@ CREATE TABLE "_group" (
   "article_id" bigint NOT NULL
 );
 
+CREATE TABLE "article_group"(
+  "id" SERIAL PRIMARY KEY,
+  "article_id" bigint NOT NULL,
+  "group_id" bigint NOT NULL
+)
+
 CREATE TABLE "user_audit" (
   "id" SERIAL PRIMARY KEY,
   "user_id" bigint NOT NULL,
   "action" action NOT NULL,
   "message" varchar,
-  "timestamp" timestamp
+  "timestamp" timestamp with time zone
 );
 
 CREATE TABLE "article_audit" (
@@ -84,7 +90,7 @@ CREATE TABLE "article_audit" (
   "article_id" bigint NOT NULL,
   "action" action NOT NULL,
   "message" varchar,
-  "timestamp" timestamp
+  "timestamp" timestamp with time zone
 );
 
 
@@ -92,6 +98,10 @@ CREATE TABLE "article_audit" (
 ALTER TABLE "user_liked_articles" ADD FOREIGN KEY ("user_id") REFERENCES "_user" ("id");
 
 ALTER TABLE "user_liked_articles" ADD FOREIGN KEY ("article_id") REFERENCES "article" ("id");
+
+ALTER TABLE "article_group" ADD FOREIGN KEY ("article_id") REFERENCES "article" ("id");
+
+ALTER TABLE "article_group" ADD FOREIGN KEY ("group_id") REFERENCES "_group" ("id");
 
 ALTER TABLE "_group" ADD FOREIGN KEY ("user_id") REFERENCES "_user" ("id");
 

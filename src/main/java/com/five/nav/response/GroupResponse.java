@@ -10,17 +10,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserResponse {
+public class GroupResponse {
 
-    long id;
+  long id;
 
-    String name;
+  String name;
 
-    String lastname;
-
-    String email;
-
-    List<Long> articles;
-
-    //Rest of response object will be added
+  List<ArticleResponse> articles;
 }

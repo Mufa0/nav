@@ -193,7 +193,7 @@ public class ArticleManagementIT {
         articlesPath, authorEmail, pass);
 
     List<ArticleResponse> allArticles = utils.getArticles(articlesPath+"/user"
-            + "/"+article1.getAuthor().getId(),
+            + "/"+article1.getAuthor(),
         authorEmail
         ,pass);
 
@@ -208,7 +208,7 @@ public class ArticleManagementIT {
         articlesPath, secondAuthorEmail, pass);
     ResponseEntity<String>response =
         Query.builder().httpMethod(HttpMethod.GET).path(articlesPath+"/user"
-            + "/"+article1.getAuthor().getId()).build().invoke(secondAuthorEmail,pass);
+            + "/"+article1.getAuthor()).build().invoke(secondAuthorEmail,pass);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 

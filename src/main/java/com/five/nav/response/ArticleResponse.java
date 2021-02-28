@@ -17,7 +17,7 @@ public class ArticleResponse {
 
   String content;
 
-  UserResponse author;
+  long author;
 
   int numberOfLikes;
 }

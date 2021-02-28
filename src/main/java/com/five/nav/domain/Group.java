@@ -1,12 +1,15 @@
 package com.five.nav.domain;
 
 
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -33,8 +36,10 @@ public class Group {
   @JoinColumn(name = "user_id")
   User user;
 
-  @ManyToOne
-  @JoinColumn(name = "article_id")
-  Article article;
+  @ManyToMany
+  @JoinTable(name = "article_group",
+  joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id"),
+  inverseJoinColumns = @JoinColumn(name = "groupId", referencedColumnName = "id"))
+  List<Article> articles;
 
 }

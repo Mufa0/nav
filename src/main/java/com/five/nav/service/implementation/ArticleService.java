@@ -26,7 +26,9 @@ import org.springframework.stereotype.Service;
 public class ArticleService implements ArticleServiceInterface {
 
   ArticleRepository articleRepository;
+
   ArticleMapper mapper;
+
   ArticleAuditServiceInterface articleAuditService;
 
 
@@ -61,7 +63,8 @@ public class ArticleService implements ArticleServiceInterface {
     StringBuilder message = new StringBuilder();
     if(article.isPresent()){
       if(article.get().getAuthor().getId() != user.getId()){
-        log.error(String.format("User with id: %d, email: %s trying to delete article with id: %d to "
+        log.error(String.format("User with id: %d, email: %s trying to update article with id: %d "
+            + "to "
             + "which "
             + "he/she is not author", user.getId(),user.getEmail(), article.get().getId()));
         throw new UserNotAllowedForThisActionException(user.getEmail());

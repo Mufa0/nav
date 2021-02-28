@@ -4,6 +4,7 @@ import com.five.nav.domain.User;
 import com.five.nav.enums.Role;
 import com.five.nav.enums.UserStatus;
 import com.five.nav.request.UserRequest;
+import com.five.nav.response.ArticleResponse;
 import com.five.nav.response.UserResponse;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -14,8 +15,8 @@ import org.springframework.stereotype.Component;
 @Component
 @AllArgsConstructor
 public class UserMapper {
+
   BCryptPasswordEncoder bCryptPasswordEncoder;
-  ArticleMapper articleMapper;
 
   public User from(UserRequest request){
     return User.builder()
@@ -35,7 +36,7 @@ public class UserMapper {
         .lastname(user.getLastname())
         .email(user.getEmail())
         .articles(user.getArticles() != null ?
-            user.getArticles().stream().map(article -> articleMapper.from(article)).collect(
+            user.getArticles().stream().map(article -> article.getId()).collect(
                 Collectors.toList()):
             new ArrayList<>())
         .build();

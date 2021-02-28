@@ -46,9 +46,6 @@ public class Article {
   @JoinColumn(name = "author")
   User author;
 
-  @OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
-  List<Group> groups;
-
   @ManyToMany(mappedBy = "likedArticles")
   List<User> userWhoLiked;
 

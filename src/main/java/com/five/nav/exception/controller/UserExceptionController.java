@@ -49,7 +49,7 @@ public class UserExceptionController {
   public ResponseEntity<String> serNotAuthenticatedHandler(UserNotAllowedForThisActionException e,
       Locale locale) {
     return new ResponseEntity<>(messageSource.getMessage(NOT_ALLOWED_MESSAGE,
-        new Object[]{e.getUserId()}, locale), HttpStatus.BAD_REQUEST);
+        new Object[]{e.getEmail()}, locale), HttpStatus.BAD_REQUEST);
   }
 
 
