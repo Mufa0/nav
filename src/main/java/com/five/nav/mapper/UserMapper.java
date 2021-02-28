@@ -1,10 +1,11 @@
 package com.five.nav.mapper;
 
+import com.five.nav.domain.Article;
+import com.five.nav.domain.Group;
 import com.five.nav.domain.User;
 import com.five.nav.enums.Role;
 import com.five.nav.enums.UserStatus;
 import com.five.nav.request.UserRequest;
-import com.five.nav.response.ArticleResponse;
 import com.five.nav.response.UserResponse;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -36,8 +37,15 @@ public class UserMapper {
         .lastname(user.getLastname())
         .email(user.getEmail())
         .articles(user.getArticles() != null ?
-            user.getArticles().stream().map(article -> article.getId()).collect(
+            user.getArticles().stream().map(Article::getId).collect(
                 Collectors.toList()):
+            new ArrayList<>())
+        .role(user.getRole().toString())
+        .groups(user.getGroups() != null ? user.getGroups().stream().map(Group::getId).collect(
+            Collectors.toList()):
+            new ArrayList<>())
+        .likedArticles(user.getLikedArticles() != null ?
+            user.getLikedArticles().stream().map(Article::getId).collect(Collectors.toList()):
             new ArrayList<>())
         .build();
   }

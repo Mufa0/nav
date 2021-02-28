@@ -1,0 +1,69 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ArticleAuditRepository</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.five.nav.repository</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ArticleAuditRepository (com.five.nav.repository)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">ArticleAuditRepository</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.five.nav.repository;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.five.nav.audit.ArticleAudit;
+<i>4</i>&nbsp;import java.util.List;
+<i>5</i>&nbsp;import org.springframework.data.jpa.repository.Query;
+<i>6</i>&nbsp;import org.springframework.data.repository.PagingAndSortingRepository;
+<i>7</i>&nbsp;import org.springframework.data.repository.query.Param;
+<i>8</i>&nbsp;import org.springframework.stereotype.Repository;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;@Repository
+<i>11</i>&nbsp;public interface ArticleAuditRepository extends PagingAndSortingRepository&lt;ArticleAudit, Long&gt; {
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;  @Query(nativeQuery = true, value = &quot;SELECT * FROM article_audit WHERE user_id = :userId&quot;)
+<i>14</i>&nbsp;  List&lt;ArticleAudit&gt; findAllForUser(@Param(&quot;userId&quot;) long userId);
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;  @Query(nativeQuery = true, value = &quot;SELECT * FROM article_audit WHERE article_id = :articleId AND user_id = :userId&quot;)
+<i>17</i>&nbsp;  List&lt;ArticleAudit&gt; findAllForArticle(@Param(&quot;articleId&quot;) long articleId, @Param(&quot;userId&quot;) long userId);
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;  @Query(nativeQuery = true, value = &quot;SELECT * FROM article_audit WHERE id = :id AND user_id = :userId&quot;)
+<i>20</i>&nbsp;  ArticleAudit findById(@Param(&quot;id&quot;) long id, @Param(&quot;userId&quot;) long userId);
+<i>21</i>&nbsp;}
+<i>22</i>&nbsp;
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2021-02-28 19:25</div>
+</div>
+</body>
+</html>

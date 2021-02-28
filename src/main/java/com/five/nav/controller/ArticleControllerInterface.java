@@ -29,8 +29,6 @@ public interface ArticleControllerInterface {
   @GetMapping("/{id}")
   ArticleResponse getArticle(@PathVariable("id") long id);
 
-
-
   @PutMapping("/{id}")
   ArticleResponse updateArticle(@PathVariable("id") long id,
       @Valid @RequestBody ArticleRequest articleRequest, Principal principal );

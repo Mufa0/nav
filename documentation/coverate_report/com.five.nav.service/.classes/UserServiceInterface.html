@@ -1,0 +1,67 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: UserServiceInterface</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.five.nav.service</a> ]
+</div>
+
+<h1>Coverage Summary for Class: UserServiceInterface (com.five.nav.service)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">UserServiceInterface</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.five.nav.service;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;
+<i>4</i>&nbsp;import com.five.nav.request.UserRequest;
+<i>5</i>&nbsp;import com.five.nav.response.UserResponse;
+<i>6</i>&nbsp;import java.security.Principal;
+<i>7</i>&nbsp;import java.util.List;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;public interface UserServiceInterface {
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;  UserResponse registerUser(UserRequest userRequest);
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;  List&lt;UserResponse&gt; getAllUsers();
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;  UserResponse getUser( Principal principal);
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;  UserResponse likeArticle(long id, Principal principal);
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;  void deleteUser(Principal principal);
+<i>20</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2021-02-28 19:25</div>
+</div>
+</body>
+</html>

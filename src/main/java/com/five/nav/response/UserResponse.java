@@ -22,5 +22,10 @@ public class UserResponse {
 
     List<Long> articles;
 
-    //Rest of response object will be added
+    String role;
+
+    List<Long> groups;
+
+    List<Long> likedArticles;
+
 }

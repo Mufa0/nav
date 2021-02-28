@@ -1,0 +1,71 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ArticleAuditControllerInterface</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.five.nav.controller</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ArticleAuditControllerInterface (com.five.nav.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">ArticleAuditControllerInterface</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.five.nav.controller;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.five.nav.response.ArticleAuditResponse;
+<i>4</i>&nbsp;import com.five.nav.response.GroupedArticleAuditResponse;
+<i>5</i>&nbsp;import java.security.Principal;
+<i>6</i>&nbsp;import java.util.List;
+<i>7</i>&nbsp;import org.springframework.web.bind.annotation.GetMapping;
+<i>8</i>&nbsp;import org.springframework.web.bind.annotation.PathVariable;
+<i>9</i>&nbsp;import org.springframework.web.bind.annotation.RequestMapping;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;@RequestMapping(&quot;/article-audits&quot;)
+<i>12</i>&nbsp;public interface ArticleAuditControllerInterface {
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;  @GetMapping(&quot;/user&quot;)
+<i>15</i>&nbsp;  List&lt;GroupedArticleAuditResponse&gt; getAllArticleAuditsForAuthor(Principal principal);
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;  @GetMapping(&quot;/{id}&quot;)
+<i>18</i>&nbsp;  ArticleAuditResponse getArticleAudit(@PathVariable(&quot;id&quot;) long id, Principal principal);
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;  @GetMapping(&quot;/article/{id}&quot;)
+<i>21</i>&nbsp;  List&lt;ArticleAuditResponse&gt; getArticleAuditsForArticle(@PathVariable(&quot;id&quot;) long articleId,
+<i>22</i>&nbsp;      Principal principal);
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2021-02-28 19:25</div>
+</div>
+</body>
+</html>

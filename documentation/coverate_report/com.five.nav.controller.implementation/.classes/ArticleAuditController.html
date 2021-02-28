@@ -1,0 +1,169 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ArticleAuditController</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.five.nav.controller.implementation</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ArticleAuditController (com.five.nav.controller.implementation)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ArticleAuditController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    40%
+  </span>
+  <span class="absValue">
+    (2/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    6.5%
+  </span>
+  <span class="absValue">
+    (2/ 31)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.five.nav.controller.implementation;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.five.nav.controller.ArticleAuditControllerInterface;
+<i>4</i>&nbsp;import com.five.nav.domain.Article;
+<i>5</i>&nbsp;import com.five.nav.domain.User;
+<i>6</i>&nbsp;import com.five.nav.exception.ArticleNotFoundException;
+<i>7</i>&nbsp;import com.five.nav.exception.UserNotAuthenticatedException;
+<i>8</i>&nbsp;import com.five.nav.repository.ArticleRepository;
+<i>9</i>&nbsp;import com.five.nav.repository.UserRepository;
+<i>10</i>&nbsp;import com.five.nav.response.ArticleAuditResponse;
+<i>11</i>&nbsp;import com.five.nav.response.GroupedArticleAuditResponse;
+<i>12</i>&nbsp;import com.five.nav.service.ArticleAuditServiceInterface;
+<i>13</i>&nbsp;import java.security.Principal;
+<i>14</i>&nbsp;import java.util.List;
+<i>15</i>&nbsp;import java.util.Optional;
+<i>16</i>&nbsp;import lombok.AllArgsConstructor;
+<i>17</i>&nbsp;import lombok.extern.slf4j.Slf4j;
+<i>18</i>&nbsp;import org.springframework.web.bind.annotation.RestController;
+<i>19</i>&nbsp;
+<b class="fc"><i>20</i>&nbsp;@Slf4j</b>
+<i>21</i>&nbsp;@RestController
+<b class="fc"><i>22</i>&nbsp;@AllArgsConstructor</b>
+<i>23</i>&nbsp;public class ArticleAuditController implements ArticleAuditControllerInterface {
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;  ArticleAuditServiceInterface articleAuditService;
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;  UserRepository userRepository;
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;  ArticleRepository articleRepository;
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;  @Override
+<i>32</i>&nbsp;  public List&lt;GroupedArticleAuditResponse&gt; getAllArticleAuditsForAuthor(Principal principal) {
+<b class="nc"><i>33</i>&nbsp;    Optional&lt;User&gt; user = userRepository.findByEmail(principal.getName());</b>
+<b class="nc"><i>34</i>&nbsp;    if(user.isPresent()){</b>
+<b class="nc"><i>35</i>&nbsp;      log.info(String.format(&quot;Finding all audits for users: %s audits grouped by audit id!&quot;,</b>
+<b class="nc"><i>36</i>&nbsp;          user.get().getEmail()));</b>
+<b class="nc"><i>37</i>&nbsp;      return articleAuditService.findArticleAuditsForUser(user.get());</b>
+<i>38</i>&nbsp;    }else{
+<b class="nc"><i>39</i>&nbsp;      log.error(&quot;User not authenticated but accessed protected URL!&quot;);</b>
+<b class="nc"><i>40</i>&nbsp;      throw new UserNotAuthenticatedException(principal.getName());</b>
+<i>41</i>&nbsp;    }
+<i>42</i>&nbsp;  }
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;  @Override
+<i>45</i>&nbsp;  public ArticleAuditResponse getArticleAudit(long id, Principal principal) {
+<b class="nc"><i>46</i>&nbsp;    Optional&lt;User&gt; user = userRepository.findByEmail(principal.getName());</b>
+<b class="nc"><i>47</i>&nbsp;    if (user.isPresent()) {</b>
+<b class="nc"><i>48</i>&nbsp;      log.info(String.format(&quot;Finding audit with id: %d !&quot;,</b>
+<b class="nc"><i>49</i>&nbsp;          id));</b>
+<b class="nc"><i>50</i>&nbsp;      return articleAuditService.findArticleAudit(id, user.get());</b>
+<i>51</i>&nbsp;    }else{
+<b class="nc"><i>52</i>&nbsp;      log.error(&quot;User not authenticated but accessed protected URL!&quot;);</b>
+<b class="nc"><i>53</i>&nbsp;      throw new UserNotAuthenticatedException(principal.getName());</b>
+<i>54</i>&nbsp;    }
+<i>55</i>&nbsp;  }
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;  @Override
+<i>58</i>&nbsp;  public List&lt;ArticleAuditResponse&gt; getArticleAuditsForArticle(long articleId,
+<i>59</i>&nbsp;      Principal principal) {
+<b class="nc"><i>60</i>&nbsp;    Optional&lt;User&gt; user = userRepository.findByEmail(principal.getName());</b>
+<b class="nc"><i>61</i>&nbsp;    Optional&lt;Article&gt; article = articleRepository.findById(articleId);</b>
+<b class="nc"><i>62</i>&nbsp;    if(user.isPresent()){</b>
+<b class="nc"><i>63</i>&nbsp;      if(article.isPresent()){</b>
+<b class="nc"><i>64</i>&nbsp;        if(article.get().getAuthor().getId() != user.get().getId()){</b>
+<b class="nc"><i>65</i>&nbsp;          log.error(String.format(&quot;User %s trying to access audits from user with id: %d!&quot;,</b>
+<b class="nc"><i>66</i>&nbsp;              user.get().getEmail(),article.get().getAuthor().getId()));</b>
+<i>67</i>&nbsp;
+<b class="nc"><i>68</i>&nbsp;          throw new UserNotAuthenticatedException(principal.getName());</b>
+<i>69</i>&nbsp;        }else{
+<b class="nc"><i>70</i>&nbsp;          log.info(String.format(&quot;Finding all audits for article: %d !&quot;,</b>
+<b class="nc"><i>71</i>&nbsp;              articleId));</b>
+<i>72</i>&nbsp;
+<b class="nc"><i>73</i>&nbsp;          return articleAuditService.findArticleAuditsForArticle(article.get(),user.get());</b>
+<i>74</i>&nbsp;        }
+<i>75</i>&nbsp;      }else{
+<b class="nc"><i>76</i>&nbsp;        log.error(String.format(&quot;Article with id: %d not found! &quot;, articleId));</b>
+<b class="nc"><i>77</i>&nbsp;        throw new ArticleNotFoundException(articleId);</b>
+<i>78</i>&nbsp;      }
+<i>79</i>&nbsp;
+<i>80</i>&nbsp;
+<i>81</i>&nbsp;    }else{
+<b class="nc"><i>82</i>&nbsp;      log.error(&quot;User not authenticated but accessed protected URL!&quot;);</b>
+<b class="nc"><i>83</i>&nbsp;      throw new UserNotAuthenticatedException(principal.getName());</b>
+<i>84</i>&nbsp;    }
+<i>85</i>&nbsp;  }
+<i>86</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2021-02-28 19:25</div>
+</div>
+</body>
+</html>

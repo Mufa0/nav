@@ -15,13 +15,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "user_audit")
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserAudit {
 
   @Id
@@ -35,6 +39,8 @@ public class UserAudit {
   @Temporal(TemporalType.TIMESTAMP)
   Date timestamp;
 
+  @Column(name = "message")
+  String message;
 
   @ManyToOne
   @JoinColumn(name = "user_id")

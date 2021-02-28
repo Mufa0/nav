@@ -4,6 +4,7 @@ import com.five.nav.controller.ArticleControllerInterface;
 import com.five.nav.domain.User;
 import com.five.nav.exception.UserNotAllowedForThisActionException;
 import com.five.nav.exception.UserNotAuthenticatedException;
+import com.five.nav.repository.ArticleRepository;
 import com.five.nav.repository.UserRepository;
 import com.five.nav.request.ArticleRequest;
 import com.five.nav.response.ArticleResponse;
@@ -23,6 +24,8 @@ public class ArticleController implements ArticleControllerInterface {
   ArticleServiceInterface articleService;
 
   UserRepository userRepository;
+
+  ArticleRepository articleRepository;
 
   @Override
   public ArticleResponse createArticle(ArticleRequest articleRequest, Principal principal) {

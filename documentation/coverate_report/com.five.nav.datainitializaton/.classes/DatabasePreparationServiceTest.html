@@ -1,0 +1,145 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: DatabasePreparationServiceTest</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.five.nav.datainitializaton</a> ]
+</div>
+
+<h1>Coverage Summary for Class: DatabasePreparationServiceTest (com.five.nav.datainitializaton)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DatabasePreparationServiceTest</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (20/ 20)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.five.nav.datainitializaton;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.five.nav.repository.ArticleAuditRepository;
+<i>4</i>&nbsp;import com.five.nav.repository.ArticleRepository;
+<i>5</i>&nbsp;import com.five.nav.repository.GroupRepository;
+<i>6</i>&nbsp;import com.five.nav.repository.UserAuditRepository;
+<i>7</i>&nbsp;import com.five.nav.repository.UserRepository;
+<i>8</i>&nbsp;import lombok.AllArgsConstructor;
+<i>9</i>&nbsp;import lombok.extern.slf4j.Slf4j;
+<i>10</i>&nbsp;import org.springframework.boot.context.event.ApplicationReadyEvent;
+<i>11</i>&nbsp;import org.springframework.context.annotation.Primary;
+<i>12</i>&nbsp;import org.springframework.context.annotation.Profile;
+<i>13</i>&nbsp;import org.springframework.context.event.EventListener;
+<i>14</i>&nbsp;import org.springframework.stereotype.Service;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;@Service
+<b class="fc"><i>17</i>&nbsp;@AllArgsConstructor</b>
+<b class="fc"><i>18</i>&nbsp;@Slf4j</b>
+<i>19</i>&nbsp;@Profile(&quot;test&quot;)
+<i>20</i>&nbsp;@Primary
+<i>21</i>&nbsp;public class DatabasePreparationServiceTest implements DataPreparationServiceInterface{
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;  UserRepository userRepository;
+<i>24</i>&nbsp;  ArticleRepository articleRepository;
+<i>25</i>&nbsp;  GroupRepository groupRepository;
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;  UserAuditRepository userAuditRepository;
+<i>28</i>&nbsp;  ArticleAuditRepository articleAuditRepository;
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;  @Override
+<i>31</i>&nbsp;  @EventListener(ApplicationReadyEvent.class)
+<i>32</i>&nbsp;  public void prepare(){
+<i>33</i>&nbsp;
+<b class="fc"><i>34</i>&nbsp;    log.info(&quot;---------------Preparing data!---------------&quot;);</b>
+<b class="fc"><i>35</i>&nbsp;    cleanDatabase();</b>
+<b class="fc"><i>36</i>&nbsp;    createInitialData();</b>
+<b class="fc"><i>37</i>&nbsp;    log.info(&quot;---------------Data prepared!---------------&quot;);</b>
+<b class="fc"><i>38</i>&nbsp;  }</b>
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;  public void cleanDatabase(){
+<b class="fc"><i>41</i>&nbsp;    userAuditRepository.deleteAll();</b>
+<b class="fc"><i>42</i>&nbsp;    log.info(&quot;Deleted all user audits!&quot;);</b>
+<i>43</i>&nbsp;
+<b class="fc"><i>44</i>&nbsp;    articleAuditRepository.deleteAll();</b>
+<b class="fc"><i>45</i>&nbsp;    log.info(&quot;Deleted all article audits!&quot;);</b>
+<i>46</i>&nbsp;
+<b class="fc"><i>47</i>&nbsp;    articleRepository.deleteAll();</b>
+<b class="fc"><i>48</i>&nbsp;    log.info(&quot;Deleted all articles!&quot;);</b>
+<i>49</i>&nbsp;
+<b class="fc"><i>50</i>&nbsp;    groupRepository.deleteAll();</b>
+<b class="fc"><i>51</i>&nbsp;    log.info(&quot;Delete all groups!&quot;);</b>
+<i>52</i>&nbsp;
+<b class="fc"><i>53</i>&nbsp;    userRepository.deleteAll();</b>
+<b class="fc"><i>54</i>&nbsp;    log.info(&quot;Delete all users!&quot;);</b>
+<i>55</i>&nbsp;
+<b class="fc"><i>56</i>&nbsp;  }</b>
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;  public void createInitialData(){
+<b class="fc"><i>59</i>&nbsp;    log.info(&quot;Didn&#39;t create initial data yet!&quot;);</b>
+<b class="fc"><i>60</i>&nbsp;  }</b>
+<i>61</i>&nbsp;
+<i>62</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2021-02-28 19:25</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,82 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: UserControllerInterface</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.five.nav.controller</a> ]
+</div>
+
+<h1>Coverage Summary for Class: UserControllerInterface (com.five.nav.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">UserControllerInterface</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.five.nav.controller;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.five.nav.request.UserRequest;
+<i>4</i>&nbsp;import com.five.nav.response.UserResponse;
+<i>5</i>&nbsp;import java.security.Principal;
+<i>6</i>&nbsp;import java.util.List;
+<i>7</i>&nbsp;import javax.validation.Valid;
+<i>8</i>&nbsp;import org.springframework.web.bind.annotation.DeleteMapping;
+<i>9</i>&nbsp;import org.springframework.web.bind.annotation.GetMapping;
+<i>10</i>&nbsp;import org.springframework.web.bind.annotation.PathVariable;
+<i>11</i>&nbsp;import org.springframework.web.bind.annotation.PostMapping;
+<i>12</i>&nbsp;import org.springframework.web.bind.annotation.PutMapping;
+<i>13</i>&nbsp;import org.springframework.web.bind.annotation.RequestBody;
+<i>14</i>&nbsp;import org.springframework.web.bind.annotation.RequestMapping;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;@RequestMapping(&quot;/users&quot;)
+<i>18</i>&nbsp;public interface UserControllerInterface {
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;  @PostMapping(&quot;/register&quot;)
+<i>21</i>&nbsp;  UserResponse registerUser(@Valid @RequestBody UserRequest user);
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;  @GetMapping
+<i>24</i>&nbsp;  List&lt;UserResponse&gt; getAllUsers();
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;  @GetMapping(&quot;/user&quot;)
+<i>27</i>&nbsp;  UserResponse getUser( Principal principal);
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;  @PutMapping(&quot;/article/{id}&quot;)
+<i>30</i>&nbsp;  UserResponse likeArticle(@PathVariable(&quot;id&quot;) long id, Principal principal);
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;  @DeleteMapping
+<i>33</i>&nbsp;  void deleteUser(Principal principal);
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2021-02-28 19:25</div>
+</div>
+</body>
+</html>

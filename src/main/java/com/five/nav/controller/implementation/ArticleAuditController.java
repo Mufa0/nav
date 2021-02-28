@@ -23,7 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class ArticleAuditController implements ArticleAuditControllerInterface {
 
   ArticleAuditServiceInterface articleAuditService;
+
   UserRepository userRepository;
+
   ArticleRepository articleRepository;
 
   @Override
