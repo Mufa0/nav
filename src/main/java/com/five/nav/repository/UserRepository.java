@@ -11,8 +11,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends PagingAndSortingRepository<User, Long> {
 
-  @Query(nativeQuery = true,value = "SELECT user.* FROM user user WHERE status = 'ACTIVE' "
-      + "ORDER BY ( SELECT audit.timestamp FROM user_audit audit WHERE user.id = audit"
+  @Query(nativeQuery = true,value = "SELECT _user.* FROM _user _user WHERE status = 'ACTIVE' "
+      + "ORDER BY ( SELECT audit.timestamp FROM user_audit audit WHERE _user.id = audit"
       + ".user_id AND action = 'CREATE') DESC")
   List<User> findAll();
 
