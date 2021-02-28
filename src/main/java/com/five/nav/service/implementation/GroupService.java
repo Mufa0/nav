@@ -1,9 +1,9 @@
 package com.five.nav.service.implementation;
 
 
+import com.five.nav.domain.Article;
 import com.five.nav.domain.Group;
 import com.five.nav.domain.User;
-import com.five.nav.exception.ArticleNotSavedException;
 import com.five.nav.exception.GroupNotFoundException;
 import com.five.nav.exception.GroupNotSavedException;
 import com.five.nav.exception.UserNotAllowedForThisActionException;
@@ -60,7 +60,7 @@ public class GroupService implements GroupServiceInterface {
           log.info("Group name changed!");
           group.get().setName(request.getName());
         }
-        if(!group.get().getArticles().stream().map(x -> x.getId()).collect(Collectors.toList()).equals(request.getArticles())){
+        if(!group.get().getArticles().stream().map(Article::getId).collect(Collectors.toList()).equals(request.getArticles())){
           log.info("List of articles in group changed!");
 
           group.get().setArticles(mapper.from(request).getArticles());
@@ -102,7 +102,7 @@ public class GroupService implements GroupServiceInterface {
   public void deleteGroup(long id, User user) {
     Optional<Group> group = groupRepository.findGroupForUser(id, user.getId());
     if(group.isPresent()){
-      log.info(String.format("Group with id: %id for user: %s is being deleted!", id,
+      log.info(String.format("Group with id: %d for user: %s is being deleted!", id,
           user.getEmail()));
       groupRepository.delete(group.get());
     }else{

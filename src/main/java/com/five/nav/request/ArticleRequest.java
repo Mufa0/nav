@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ArticleRequest {
+public class ArticleRequest implements Request{
 
   private static final String TITLE_NOT_VALID="Exception.article.titleNotValid";
   private static final String CONTENT_NOT_VALID="Exception.article.contentNotValid";

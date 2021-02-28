@@ -3,14 +3,16 @@ package com.five.nav.integration;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.five.nav.utils.ArticleManagementITUtils;
 import com.five.nav.NewsArticleViewerApplication;
 import com.five.nav.Query;
+import com.five.nav.domain.Article;
 import com.five.nav.enums.Role;
 import com.five.nav.request.ArticleRequest;
 import com.five.nav.request.UserRequest;
 import com.five.nav.response.ArticleResponse;
+import com.five.nav.utils.IntegrationTestsUtils;
 import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -33,7 +35,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class ArticleManagementIT {
 
   ObjectMapper objectMapper = new ObjectMapper();
-  ArticleManagementITUtils utils = new ArticleManagementITUtils(objectMapper);
+  IntegrationTestsUtils utils = new IntegrationTestsUtils(objectMapper);
 
   String authorEmail = "author@test.com";
   String secondAuthorEmail = "secondAuthor@test.com";
@@ -94,15 +96,21 @@ public class ArticleManagementIT {
   @Test
   void editArticleFromAuthor_ExpectPositiveResult() throws JsonProcessingException {
 
-    ArticleResponse beforeUpdate = utils.createArticle("Should pass", "Should "
-        + "pass", articlesPath, authorEmail, pass );
+    ArticleRequest beforeUpdateRequest = ArticleRequest.builder().title("Should pass").content(
+        "Should pass").build();
+
+    ArticleRequest updateRequest = ArticleRequest.builder().title("Changed title!").content(
+        "Should pass").build();
+
+    ArticleResponse beforeUpdate = utils.create(beforeUpdateRequest, articlesPath, authorEmail,
+        pass, ArticleResponse.class);
 
 
-    utils.updateArticle("Changed title!","Should pass",
+    utils.update(updateRequest,
         articlesPath+"/"+beforeUpdate.getId(), authorEmail, pass);
 
     ArticleResponse afterUpdate =
-        utils.getArticle(articlesPath+"/"+beforeUpdate.getId(),authorEmail, pass);
+        utils.get(articlesPath+"/"+beforeUpdate.getId(),authorEmail, pass, ArticleResponse.class);
     assertThat(beforeUpdate).isNotEqualTo(afterUpdate);
 
   }
@@ -110,15 +118,21 @@ public class ArticleManagementIT {
   @Test
   void editArticleFromAnotherAuthor_ExpectNegativeResult() throws JsonProcessingException {
 
-    ArticleResponse beforeUpdate = utils.createArticle("Should pass", "Should "
-        + "pass", articlesPath, authorEmail, pass);
+    ArticleRequest beforeUpdateRequest = ArticleRequest.builder().title("Should pass").content(
+        "Should pass").build();
+
+    ArticleRequest updateRequest = ArticleRequest.builder().title("Changed title!").content(
+        "Should pass").build();
+
+    ArticleResponse beforeUpdate = utils.create(beforeUpdateRequest, articlesPath, authorEmail,
+        pass, ArticleResponse.class);
 
 
-    utils.updateArticle("Changed title", "Should pass",
+    utils.update(updateRequest,
         articlesPath+"/"+beforeUpdate.getId(), secondAuthorEmail, pass);
 
     ArticleResponse afterUpdate =
-        utils.getArticle(articlesPath+"/"+beforeUpdate.getId(), authorEmail, pass);
+        utils.get(articlesPath+"/"+beforeUpdate.getId(), authorEmail, pass, ArticleResponse.class);
 
     assertThat(beforeUpdate).isEqualTo(afterUpdate);
 
@@ -127,16 +141,20 @@ public class ArticleManagementIT {
   @Test
   void deleteArticleFromAuthor_ExpectPositiveResult() throws JsonProcessingException {
 
-    ArticleResponse article = utils.createArticle("Should pass", "Should pass",
-        articlesPath,authorEmail, pass);
+    ArticleRequest request = ArticleRequest.builder().title("Should pass").content(
+        "Should pass").build();
 
-    List<ArticleResponse> beforeDeletion = utils.getArticles(articlesPath,
-        authorEmail,pass);
 
-    utils.deleteArticle(articlesPath+"/"+article.getId(), authorEmail, pass);
+    ArticleResponse article = utils.create(request,
+        articlesPath,authorEmail, pass, ArticleResponse.class);
 
-    List<ArticleResponse> afterDeletion = utils.getArticles(articlesPath,
-        authorEmail,pass);
+    List<ArticleResponse> beforeDeletion = utils.getAll(articlesPath,
+        authorEmail,pass, new TypeReference<List<ArticleResponse>>() {});
+
+    utils.delete(articlesPath+"/"+article.getId(), authorEmail, pass);
+
+    List<ArticleResponse> afterDeletion = utils.getAll(articlesPath,
+        authorEmail,pass, new TypeReference<List<ArticleResponse>>() {});
 
     assertThat(beforeDeletion.size()).isEqualTo(afterDeletion.size()+1);
 
@@ -144,17 +162,19 @@ public class ArticleManagementIT {
 
   @Test
   void deleteArticleFromDifferentAuthor_ExpectNegativeResult() throws JsonProcessingException {
+    ArticleRequest request = ArticleRequest.builder().title("Should pass").content(
+        "Should pass").build();
 
-    ArticleResponse article = utils.createArticle("Should pass", "Should pass",
-        articlesPath, authorEmail, pass);
+    ArticleResponse article = utils.create(request,
+        articlesPath, authorEmail, pass, ArticleResponse.class);
 
-    List<ArticleResponse> beforeDeletion = utils.getArticles(articlesPath,
-        secondAuthorEmail, pass);
+    List<ArticleResponse> beforeDeletion = utils.getAll(articlesPath,
+        secondAuthorEmail, pass, new TypeReference<List<ArticleResponse>>() {});
 
-    utils.deleteArticle(articlesPath+"/"+article.getId(), secondAuthorEmail, pass);
+    utils.delete(articlesPath+"/"+article.getId(), secondAuthorEmail, pass);
 
-    List<ArticleResponse> afterDeletion = utils.getArticles(articlesPath,
-        secondAuthorEmail, pass);
+    List<ArticleResponse> afterDeletion = utils.getAll(articlesPath,
+        secondAuthorEmail, pass, new TypeReference<List<ArticleResponse>>() {});
 
 
     assertThat(beforeDeletion.size()).isEqualTo(afterDeletion.size());
@@ -164,12 +184,14 @@ public class ArticleManagementIT {
   @Test
   void getAllArticlesAsReader_ExpectPositiveResult() throws JsonProcessingException {
 
-    ArticleResponse article = utils.createArticle("Should pass", "Should pass",
-        articlesPath, authorEmail, pass);
+    ArticleRequest request = ArticleRequest.builder().title("Should pass").content(
+        "Should pass").build();
+    ArticleResponse article = utils.create(request,
+        articlesPath, authorEmail, pass, ArticleResponse.class);
 
     List<ArticleResponse> allArticles = utils
-        .getArticles(articlesPath,readerEmail
-        ,pass);
+        .getAll(articlesPath,readerEmail
+        ,pass,new TypeReference<List<ArticleResponse>>() {});
 
     assertThat(allArticles).contains(article);
 
@@ -177,35 +199,42 @@ public class ArticleManagementIT {
 
   @Test
   void getAllArticlesAsAuthor_ExpectPositiveResult() throws JsonProcessingException {
-    ArticleResponse article = utils.createArticle("Should pass", "Should pass",
-        articlesPath, authorEmail, pass);
+    ArticleRequest request = ArticleRequest.builder().title("Should pass").content(
+        "Should pass").build();
+    ArticleResponse article = utils.create(request,
+        articlesPath, authorEmail, pass, ArticleResponse.class);
 
     List<ArticleResponse> allArticles = utils
-        .getArticles(articlesPath,authorEmail
-        ,pass);
+        .getAll(articlesPath, authorEmail
+            , pass, new TypeReference<List<ArticleResponse>>() {});
 
     assertThat(allArticles).contains(article);
   }
 
   @Test
   void getAllArticlesFromAuthor_ExpectPositiveResult() throws  JsonProcessingException{
-    ArticleResponse article1 = utils.createArticle("Should pass", "Should pass",
-        articlesPath, authorEmail, pass);
+    ArticleRequest request = ArticleRequest.builder().title("Should pass").content(
+        "Should pass").build();
+    ArticleResponse article1 = utils.create(request,
+        articlesPath, authorEmail, pass, ArticleResponse.class);
 
-    List<ArticleResponse> allArticles = utils.getArticles(articlesPath+"/user"
+    List<ArticleResponse> allArticles = utils.getAll(articlesPath+"/user"
             + "/"+article1.getAuthor(),
         authorEmail
-        ,pass);
+        ,pass, new TypeReference<List<ArticleResponse>>() {});
 
     assertThat(allArticles).contains(article1);
   }
 
   @Test
   void getAllArticlesFromAnotherAuthor_ExpectNegativeResult() throws JsonProcessingException{
-    ArticleResponse article1 = utils.createArticle("Should pass", "Should pass",
-        articlesPath, authorEmail, pass);
-    ArticleResponse article2 = utils.createArticle("Should pass", "Should pass",
-        articlesPath, secondAuthorEmail, pass);
+    ArticleRequest request = ArticleRequest.builder().title("Should pass").content(
+        "Should pass").build();
+    ArticleResponse article1 = utils.create(request,
+        articlesPath, authorEmail, pass, ArticleResponse.class);
+
+    utils.create(request,
+        articlesPath, secondAuthorEmail, pass, ArticleResponse.class);
     ResponseEntity<String>response =
         Query.builder().httpMethod(HttpMethod.GET).path(articlesPath+"/user"
             + "/"+article1.getAuthor()).build().invoke(secondAuthorEmail,pass);

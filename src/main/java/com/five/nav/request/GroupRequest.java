@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GroupRequest {
+public class GroupRequest implements Request {
 
   private static final String NAME_NOT_VALID = "Exception.group.nameNotValid";
 

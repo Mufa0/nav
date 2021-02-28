@@ -38,8 +38,8 @@ public class Group {
 
   @ManyToMany
   @JoinTable(name = "article_group",
-  joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id"),
-  inverseJoinColumns = @JoinColumn(name = "groupId", referencedColumnName = "id"))
+  joinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"),
+  inverseJoinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id"))
   List<Article> articles;
 
 }

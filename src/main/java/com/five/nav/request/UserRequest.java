@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRequest {
+public class UserRequest implements  Request{
 
   private static final String NAME_NOT_VALID = "Exception.user.nameNotValid";
   private static final String LASTNAME_NOT_VALID = "Exception.user.lastnameNotValid";

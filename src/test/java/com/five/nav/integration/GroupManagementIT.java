@@ -1,18 +1,23 @@
 package com.five.nav.integration;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.five.nav.NewsArticleViewerApplication;
 import com.five.nav.Query;
 import com.five.nav.domain.Article;
 import com.five.nav.enums.Role;
 import com.five.nav.request.ArticleRequest;
+import com.five.nav.request.GroupRequest;
 import com.five.nav.request.UserRequest;
 import com.five.nav.response.ArticleResponse;
-import com.five.nav.utils.ArticleManagementITUtils;
-import com.five.nav.utils.GroupManagementITUtils;
-import javafx.beans.binding.StringExpression;
+import com.five.nav.response.GroupResponse;
+import com.five.nav.utils.IntegrationTestsUtils;
+import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,8 +34,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class GroupManagementIT {
 
   ObjectMapper objectMapper = new ObjectMapper();
-  ArticleManagementITUtils articleUtils = new ArticleManagementITUtils(objectMapper);
-  GroupManagementITUtils groupUtils = new GroupManagementITUtils(objectMapper);
+  IntegrationTestsUtils utils = new IntegrationTestsUtils(objectMapper);
 
   String authorEmail = "author@test.com";
   String secondAuthorEmail = "secondAuthor@test.com";
@@ -40,6 +44,7 @@ public class GroupManagementIT {
 
   String registerPath = "/users/register";
   String articlesPath = "/articles";
+  String groupsPath = "/groups";
 
   ArticleResponse articleOne;
   ArticleResponse articleTwo;
@@ -63,17 +68,111 @@ public class GroupManagementIT {
 
     Query.builder().path(registerPath).httpMethod(HttpMethod.POST).request(secondAuthorRequest).build().invoke();
 
+    ArticleRequest articleOneRequest = ArticleRequest.builder().title("Article 1").content(
+        "Content of article 1").build();
 
-    articleOne = articleUtils.createArticle("Article 1", "Content of article 1", articlesPath,
-        authorEmail, pass);
-    articleTwo = articleUtils.createArticle("Article 2", "Content of article 2", articlesPath,
-        authorEmail, pass);
+    ArticleRequest articleTwoRequest = ArticleRequest.builder().title("Article 2").content(
+        "Content of article 2").build();
 
-    articleThree = articleUtils.createArticle("Article 3", "Content of article 3", articlesPath,
-        secondAuthorEmail, pass);
-    articleFour = articleUtils.createArticle("Article 4", "Content of article 4", articlesPath,
-        secondAuthorEmail, pass);
+    ArticleRequest articleThreeRequest = ArticleRequest.builder().title("Article 3").content(
+        "Content of article 3").build();
+
+    ArticleRequest articleFourRequest = ArticleRequest.builder().title("Article 4").content(
+        "Content of article 4").build();
+
+    articleOne = utils.create(articleOneRequest, articlesPath,
+        authorEmail, pass, ArticleResponse.class);
+    articleTwo = utils.create(articleTwoRequest, articlesPath,
+        authorEmail, pass, ArticleResponse.class);
+
+    articleThree = utils.create(articleThreeRequest, articlesPath,
+        secondAuthorEmail, pass,ArticleResponse.class);
+    articleFour = utils.create(articleFourRequest, articlesPath,
+        secondAuthorEmail, pass,ArticleResponse.class);
   }
 
+  @Test
+  void createGroupForReader_ExpectPositiveResult() throws JsonProcessingException {
+
+    List<Long> articles = List.of(articleOne.getId(), articleTwo.getId());
+    GroupRequest request = GroupRequest.builder().name("One").articles(articles).build();
+    GroupResponse response = utils.create(request, groupsPath, readerEmail, pass,
+        GroupResponse.class);
+
+    assertThat(response.getArticles()).contains(articleOne).contains(articleTwo);
+  }
+
+  @Test
+  void updateGroupForReader_ExpectPositiveResult() throws  JsonProcessingException {
+    List<Long> articles = List.of(articleOne.getId(), articleTwo.getId());
+    GroupRequest request = GroupRequest.builder().name("Two").articles(articles).build();
+    GroupResponse response = utils.create(request, groupsPath, readerEmail, pass,
+        GroupResponse.class);
+
+    GroupRequest updateRequest = GroupRequest.builder().name("Three").articles(articles).build();
+    utils.update(updateRequest, groupsPath+"/"+response.getId(), readerEmail, pass);
+
+    GroupResponse afterUpdate = utils.get(groupsPath+"/"+response.getId(),readerEmail, pass, GroupResponse.class);
+
+    assertThat(response.getName()).isNotEqualTo(afterUpdate.getName());
+
+  }
+
+  @Test
+  void removeArticleFromGroup_ExpectPositiveResult() throws JsonProcessingException {
+    List<Long> articles = List.of(articleOne.getId(), articleTwo.getId());
+
+    GroupRequest request = GroupRequest.builder().name("Two").articles(articles).build();
+
+    GroupResponse response = utils.create(request, groupsPath, readerEmail, pass,
+        GroupResponse.class);
+
+    GroupRequest updateRequest =
+        GroupRequest.builder().name("Two").articles(List.of(articleOne.getId())).build();
+    utils.update(updateRequest, groupsPath+"/"+response.getId(), readerEmail, pass);
+
+    GroupResponse afterUpdate = utils.get(groupsPath+"/"+response.getId(),readerEmail, pass, GroupResponse.class);
+
+    assertThat(response.getArticles()).isNotEqualTo(afterUpdate.getArticles());
+  }
+
+  @Test
+  void getOneSpecificGroup_ExpectPositiveResult() throws JsonProcessingException{
+    List<Long> articles = List.of(articleOne.getId(), articleTwo.getId());
+
+    GroupRequest request = GroupRequest.builder().name("Two").articles(articles).build();
+
+    GroupResponse response = utils.create(request, groupsPath, readerEmail, pass,
+        GroupResponse.class);
+
+    GroupResponse fetched = utils.get(groupsPath+"/"+response.getId(),readerEmail, pass,
+        GroupResponse.class);
+
+    assertThat(response).isEqualTo(fetched);
+  }
+
+  @Test
+  void deleteGroup_ExpectPositiveResult() throws JsonProcessingException{
+    List<Long> articles = List.of(articleOne.getId(), articleTwo.getId());
+
+    GroupRequest groupOneRequest = GroupRequest.builder().name("One").articles(articles).build();
+    GroupRequest groupTwoRequest = GroupRequest.builder().name("Two").articles(articles).build();
+
+
+    GroupResponse groupOne = utils.create(groupOneRequest, groupsPath, readerEmail, pass,
+        GroupResponse.class);
+    GroupResponse groupTwo = utils.create(groupTwoRequest, groupsPath, readerEmail, pass,
+        GroupResponse.class);
+
+    List<GroupResponse> groupsBeforeDeletion = utils.getAll(groupsPath+"/user", readerEmail, pass,
+        new TypeReference<List<GroupResponse>>() {});
+
+    utils.delete(groupsPath+"/"+groupOne.getId(), readerEmail, pass);
+
+    List<GroupResponse> groupsAfterDeletion = utils.getAll(groupsPath+"/user", readerEmail, pass,
+        new TypeReference<List<GroupResponse>>() {});
+
+    assertThat(groupsBeforeDeletion.size()).isEqualTo(groupsAfterDeletion.size()+1);
+  }
 
 }

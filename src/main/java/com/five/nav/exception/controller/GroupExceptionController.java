@@ -26,6 +26,6 @@ public class GroupExceptionController {
   @ExceptionHandler(value = GroupNotSavedException.class)
   public ResponseEntity<String> groupNotSavedHandler(GroupNotSavedException e, Locale locale){
     return new ResponseEntity<>(messageSource.getMessage(NOT_SAVED_MESSAGE,null,locale),
-        HttpStatus.NOT_FOUND);
+        HttpStatus.BAD_REQUEST);
   }
 }

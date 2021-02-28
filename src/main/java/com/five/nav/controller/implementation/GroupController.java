@@ -3,21 +3,21 @@ package com.five.nav.controller.implementation;
 import com.five.nav.controller.GroupControllerInterface;
 import com.five.nav.domain.User;
 import com.five.nav.exception.UserNotAuthenticatedException;
-import com.five.nav.mapper.GroupMapper;
 import com.five.nav.repository.UserRepository;
 import com.five.nav.request.GroupRequest;
 import com.five.nav.response.GroupResponse;
 import com.five.nav.service.GroupServiceInterface;
-import com.five.nav.service.implementation.GroupService;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
+@AllArgsConstructor
 public class GroupController implements GroupControllerInterface {
 
   GroupServiceInterface groupService;
