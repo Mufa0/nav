@@ -26,7 +26,9 @@ public class UserMapper {
         .email(request.getEmail())
         .password(bCryptPasswordEncoder.encode(request.getPassword()))
         .status(UserStatus.ACTIVE)
-        .role(request.getRole() != null ? Role.valueOf(request.getRole()) : Role.READER )
+        .role(request.getRole() != null && !request.getRole().isBlank()?
+            Role.valueOf(request.getRole()) :
+            Role.READER )
         .build();
   }
 
