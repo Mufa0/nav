@@ -1,0 +1,135 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: UserAuditController</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.five.nav.controller.implementation</a> ]
+</div>
+
+<h1>Coverage Summary for Class: UserAuditController (com.five.nav.controller.implementation)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UserAuditController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (2/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    11.1%
+  </span>
+  <span class="absValue">
+    (2/ 18)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.five.nav.controller.implementation;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.five.nav.controller.UserAuditControllerInterface;
+<i>4</i>&nbsp;import com.five.nav.domain.User;
+<i>5</i>&nbsp;import com.five.nav.exception.UserNotAuthenticatedException;
+<i>6</i>&nbsp;import com.five.nav.repository.UserRepository;
+<i>7</i>&nbsp;import com.five.nav.response.UserAuditResponse;
+<i>8</i>&nbsp;import com.five.nav.service.UserAuditServiceInterface;
+<i>9</i>&nbsp;import java.security.Principal;
+<i>10</i>&nbsp;import java.util.List;
+<i>11</i>&nbsp;import java.util.Optional;
+<i>12</i>&nbsp;import lombok.AllArgsConstructor;
+<i>13</i>&nbsp;import lombok.extern.slf4j.Slf4j;
+<i>14</i>&nbsp;import org.springframework.web.bind.annotation.RestController;
+<i>15</i>&nbsp;
+<b class="fc"><i>16</i>&nbsp;@Slf4j</b>
+<i>17</i>&nbsp;@RestController
+<b class="fc"><i>18</i>&nbsp;@AllArgsConstructor</b>
+<i>19</i>&nbsp;public class UserAuditController implements UserAuditControllerInterface {
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;  UserAuditServiceInterface userAuditService;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;  UserRepository userRepository;
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;  @Override
+<i>26</i>&nbsp;  public List&lt;UserAuditResponse&gt; getAllUserAuditsForUser(Principal principal) {
+<b class="nc"><i>27</i>&nbsp;    log.info(String.format(&quot;Getting all audits for user: %s&quot;, principal.getName()));</b>
+<b class="nc"><i>28</i>&nbsp;    Optional&lt;User&gt; user = userRepository.findByEmail(principal.getName());</b>
+<b class="nc"><i>29</i>&nbsp;    if(user.isPresent()){</b>
+<b class="nc"><i>30</i>&nbsp;      log.info(String.format(&quot;Finding all audits for user: %s !&quot;,</b>
+<b class="nc"><i>31</i>&nbsp;          user.get().getEmail()));</b>
+<b class="nc"><i>32</i>&nbsp;      return userAuditService.findUserAuditsForUser(user.get());</b>
+<i>33</i>&nbsp;    }else{
+<b class="nc"><i>34</i>&nbsp;      log.error(&quot;User not authenticated but accessed protected URL!&quot;);</b>
+<b class="nc"><i>35</i>&nbsp;      throw new UserNotAuthenticatedException(principal.getName());</b>
+<i>36</i>&nbsp;    }
+<i>37</i>&nbsp;  }
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;  @Override
+<i>40</i>&nbsp;  public UserAuditResponse getAuditForUser(long id, Principal principal) {
+<b class="nc"><i>41</i>&nbsp;    log.info(String.format(&quot;Getting audit for user: %s&quot;, principal.getName()));</b>
+<b class="nc"><i>42</i>&nbsp;    Optional&lt;User&gt; user = userRepository.findByEmail(principal.getName());</b>
+<b class="nc"><i>43</i>&nbsp;    if(user.isPresent()){</b>
+<b class="nc"><i>44</i>&nbsp;      log.info(String.format(&quot;Finding audit for user: %s !&quot;,</b>
+<b class="nc"><i>45</i>&nbsp;          user.get().getEmail()));</b>
+<b class="nc"><i>46</i>&nbsp;      return userAuditService.findAuditForUser(id,user.get());</b>
+<i>47</i>&nbsp;    }else{
+<b class="nc"><i>48</i>&nbsp;      log.error(&quot;User not authenticated but accessed protected URL!&quot;);</b>
+<b class="nc"><i>49</i>&nbsp;      throw new UserNotAuthenticatedException(principal.getName());</b>
+<i>50</i>&nbsp;    }
+<i>51</i>&nbsp;  }
+<i>52</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2021-02-28 19:25</div>
+</div>
+</body>
+</html>

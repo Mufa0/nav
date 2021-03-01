@@ -1,0 +1,227 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ArticleService</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.five.nav.service.implementation</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ArticleService (com.five.nav.service.implementation)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ArticleService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/ 8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    82%
+  </span>
+  <span class="absValue">
+    (50/ 61)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.five.nav.service.implementation;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.five.nav.domain.Article;
+<i>4</i>&nbsp;import com.five.nav.domain.User;
+<i>5</i>&nbsp;import com.five.nav.enums.Action;
+<i>6</i>&nbsp;import com.five.nav.enums.ArticleStatus;
+<i>7</i>&nbsp;import com.five.nav.exception.ArticleNotFoundException;
+<i>8</i>&nbsp;import com.five.nav.exception.ArticleNotSavedException;
+<i>9</i>&nbsp;import com.five.nav.exception.UserNotAllowedForThisActionException;
+<i>10</i>&nbsp;import com.five.nav.mapper.ArticleMapper;
+<i>11</i>&nbsp;import com.five.nav.repository.ArticleRepository;
+<i>12</i>&nbsp;import com.five.nav.request.ArticleRequest;
+<i>13</i>&nbsp;import com.five.nav.response.ArticleResponse;
+<i>14</i>&nbsp;import com.five.nav.service.ArticleAuditServiceInterface;
+<i>15</i>&nbsp;import com.five.nav.service.ArticleServiceInterface;
+<i>16</i>&nbsp;import java.util.List;
+<i>17</i>&nbsp;import java.util.Optional;
+<i>18</i>&nbsp;import java.util.stream.Collectors;
+<i>19</i>&nbsp;import lombok.AllArgsConstructor;
+<i>20</i>&nbsp;import lombok.extern.slf4j.Slf4j;
+<i>21</i>&nbsp;import org.springframework.stereotype.Service;
+<i>22</i>&nbsp;
+<b class="fc"><i>23</i>&nbsp;@Slf4j</b>
+<i>24</i>&nbsp;@Service
+<b class="fc"><i>25</i>&nbsp;@AllArgsConstructor</b>
+<i>26</i>&nbsp;public class ArticleService implements ArticleServiceInterface {
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;  ArticleRepository articleRepository;
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;  ArticleMapper mapper;
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;  ArticleAuditServiceInterface articleAuditService;
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;  @Override
+<i>36</i>&nbsp;  public ArticleResponse createArticle(ArticleRequest articleRequest, User user) {
+<i>37</i>&nbsp;
+<b class="fc"><i>38</i>&nbsp;    Article article = mapper.from(articleRequest);</b>
+<b class="fc"><i>39</i>&nbsp;    article.setAuthor(user);</b>
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;    try{
+<b class="fc"><i>42</i>&nbsp;      article = articleRepository.save(article);</b>
+<i>43</i>&nbsp;
+<b class="fc"><i>44</i>&nbsp;      String message = String.format(&quot;Article with id: %d and title: %s saved to database!&quot;,</b>
+<b class="fc"><i>45</i>&nbsp;          article.getId()</b>
+<b class="fc"><i>46</i>&nbsp;          , article.getTitle());</b>
+<i>47</i>&nbsp;
+<b class="fc"><i>48</i>&nbsp;      log.info(message);</b>
+<i>49</i>&nbsp;
+<b class="fc"><i>50</i>&nbsp;      articleAuditService.createAudit(user, article, message, Action.CREATE);</b>
+<i>51</i>&nbsp;
+<b class="fc"><i>52</i>&nbsp;      return mapper.from(article);</b>
+<b class="nc"><i>53</i>&nbsp;    }catch (Exception e){</b>
+<b class="nc"><i>54</i>&nbsp;      log.error(String.format(&quot;Article with title: %s could not be saved. Message: %s.&quot;,</b>
+<b class="nc"><i>55</i>&nbsp;          articleRequest.getTitle(), e));</b>
+<b class="nc"><i>56</i>&nbsp;      throw new ArticleNotSavedException(e.getMessage());</b>
+<i>57</i>&nbsp;    }
+<i>58</i>&nbsp;  }
+<i>59</i>&nbsp;
+<i>60</i>&nbsp;  @Override
+<i>61</i>&nbsp;  public ArticleResponse updateArticle(long id, ArticleRequest articleRequest, User user) {
+<b class="fc"><i>62</i>&nbsp;    Optional&lt;Article&gt; article = articleRepository.findById(id);</b>
+<b class="fc"><i>63</i>&nbsp;    StringBuilder message = new StringBuilder();</b>
+<b class="fc"><i>64</i>&nbsp;    if(article.isPresent()){</b>
+<b class="fc"><i>65</i>&nbsp;      if(article.get().getAuthor().getId() != user.getId()){</b>
+<b class="fc"><i>66</i>&nbsp;        log.error(String.format(&quot;User with id: %d, email: %s trying to update article with id: %d &quot;</b>
+<i>67</i>&nbsp;            + &quot;to &quot;
+<i>68</i>&nbsp;            + &quot;which &quot;
+<b class="fc"><i>69</i>&nbsp;            + &quot;he/she is not author&quot;, user.getId(),user.getEmail(), article.get().getId()));</b>
+<b class="fc"><i>70</i>&nbsp;        throw new UserNotAllowedForThisActionException(user.getEmail());</b>
+<i>71</i>&nbsp;      }
+<b class="fc"><i>72</i>&nbsp;      if(!article.get().getTitle().equals(articleRequest.getTitle())){</b>
+<b class="fc"><i>73</i>&nbsp;        message.append(String.format(&quot;Article title changed from: %s to %s&quot;,</b>
+<b class="fc"><i>74</i>&nbsp;            article.get().getTitle(), articleRequest.getTitle()));</b>
+<b class="fc"><i>75</i>&nbsp;        message.append(&quot;\n&quot;);</b>
+<b class="fc"><i>76</i>&nbsp;        article.get().setTitle(articleRequest.getTitle());</b>
+<b class="fc"><i>77</i>&nbsp;        log.debug(&quot;Article title changed!&quot;);</b>
+<i>78</i>&nbsp;      }
+<b class="fc"><i>79</i>&nbsp;      if(!article.get().getContent().equals(articleRequest.getContent())){</b>
+<b class="nc"><i>80</i>&nbsp;        message.append(&quot;Article content changed, no diff displayed for now!&quot;);</b>
+<b class="nc"><i>81</i>&nbsp;        log.debug(&quot;Article content changed!&quot;);</b>
+<b class="nc"><i>82</i>&nbsp;        article.get().setContent(articleRequest.getContent());</b>
+<i>83</i>&nbsp;      }
+<i>84</i>&nbsp;
+<b class="fc"><i>85</i>&nbsp;      Article updatedArticle = articleRepository.save(article.get());</b>
+<b class="fc"><i>86</i>&nbsp;      log.info(String.format(&quot;Article with id: %d  updated !&quot;, updatedArticle.getId()));</b>
+<i>87</i>&nbsp;
+<b class="fc"><i>88</i>&nbsp;      articleAuditService.createAudit(user,updatedArticle,message.toString(),Action.UPDATE);</b>
+<i>89</i>&nbsp;
+<b class="fc"><i>90</i>&nbsp;      return mapper.from(updatedArticle);</b>
+<i>91</i>&nbsp;
+<i>92</i>&nbsp;    }else{
+<b class="nc"><i>93</i>&nbsp;      log.error(String.format(&quot;Article with id: %d not found!&quot;,id));</b>
+<b class="nc"><i>94</i>&nbsp;      throw new ArticleNotFoundException(id);</b>
+<i>95</i>&nbsp;    }
+<i>96</i>&nbsp;  }
+<i>97</i>&nbsp;
+<i>98</i>&nbsp;  @Override
+<i>99</i>&nbsp;  public List&lt;ArticleResponse&gt; getAllArticles() {
+<b class="fc"><i>100</i>&nbsp;    List&lt;Article&gt; articles = articleRepository.findAll();</b>
+<b class="fc"><i>101</i>&nbsp;    log.info(String.format(&quot;Found %d articles in database!&quot;, articles.size()));</b>
+<b class="fc"><i>102</i>&nbsp;    return articles.stream().map(article -&gt; mapper.from(article)).collect(Collectors.toList());</b>
+<i>103</i>&nbsp;  }
+<i>104</i>&nbsp;
+<i>105</i>&nbsp;  @Override
+<i>106</i>&nbsp;  public List&lt;ArticleResponse&gt; getAllArticlesForAuthor(User user){
+<b class="fc"><i>107</i>&nbsp;    List&lt;Article&gt; articles = articleRepository.findAllByAuthor(user.getId());</b>
+<b class="fc"><i>108</i>&nbsp;    log.info(String.format(&quot;Found %d articles for user: %s!&quot;, articles.size(), user.getEmail()));</b>
+<b class="fc"><i>109</i>&nbsp;    return articles.stream().map(article -&gt; mapper.from(article)).collect(Collectors.toList());</b>
+<i>110</i>&nbsp;  }
+<i>111</i>&nbsp;
+<i>112</i>&nbsp;  @Override
+<i>113</i>&nbsp;  public ArticleResponse getArticle(long id) {
+<b class="fc"><i>114</i>&nbsp;    Optional&lt;Article&gt; article = articleRepository.findById(id);</b>
+<b class="fc"><i>115</i>&nbsp;    if(article.isPresent()){</b>
+<b class="fc"><i>116</i>&nbsp;      log.info(String.format(&quot;Finding with id: %d found.&quot;, id));</b>
+<b class="fc"><i>117</i>&nbsp;      return mapper.from(article.get());</b>
+<i>118</i>&nbsp;    }else{
+<b class="nc"><i>119</i>&nbsp;      log.error(String.format(&quot;Article with id: %d is not existing&quot;,id));</b>
+<b class="nc"><i>120</i>&nbsp;      throw new ArticleNotFoundException(id);</b>
+<i>121</i>&nbsp;    }
+<i>122</i>&nbsp;
+<i>123</i>&nbsp;  }
+<i>124</i>&nbsp;
+<i>125</i>&nbsp;  @Override
+<i>126</i>&nbsp;  public void delete(long id, User user) {
+<b class="fc"><i>127</i>&nbsp;    Optional&lt;Article&gt; article = articleRepository.findById(id);</b>
+<b class="fc"><i>128</i>&nbsp;    if (article.isPresent()) {</b>
+<b class="fc"><i>129</i>&nbsp;      if (article.get().getAuthor().getId() != user.getId()) {</b>
+<b class="fc"><i>130</i>&nbsp;        log.error(</b>
+<i>131</i>&nbsp;            &quot;User with id: %d, email: %s trying to delete article with id: %d to which he/she is &quot;
+<i>132</i>&nbsp;                + &quot;not author&quot;);
+<b class="fc"><i>133</i>&nbsp;        throw new UserNotAllowedForThisActionException(user.getEmail());</b>
+<i>134</i>&nbsp;      }
+<b class="fc"><i>135</i>&nbsp;      article.get().setStatus(ArticleStatus.DELETED);</b>
+<b class="fc"><i>136</i>&nbsp;      articleRepository.save(article.get());</b>
+<i>137</i>&nbsp;
+<b class="fc"><i>138</i>&nbsp;      String message = String.format(&quot;Article with id: %d succefully deleted!&quot;, id);</b>
+<b class="fc"><i>139</i>&nbsp;      articleAuditService.createAudit(user, article.get(), message, Action.DELETE);</b>
+<b class="fc"><i>140</i>&nbsp;      log.info(message);</b>
+<i>141</i>&nbsp;
+<i>142</i>&nbsp;    }
+<b class="fc"><i>143</i>&nbsp;  }</b>
+<i>144</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2021-02-28 19:25</div>
+</div>
+</body>
+</html>

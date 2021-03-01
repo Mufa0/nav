@@ -1,0 +1,65 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: UserAuditControllerInterface</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.five.nav.controller</a> ]
+</div>
+
+<h1>Coverage Summary for Class: UserAuditControllerInterface (com.five.nav.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">UserAuditControllerInterface</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.five.nav.controller;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.five.nav.response.UserAuditResponse;
+<i>4</i>&nbsp;import java.security.Principal;
+<i>5</i>&nbsp;import java.util.List;
+<i>6</i>&nbsp;import org.springframework.web.bind.annotation.GetMapping;
+<i>7</i>&nbsp;import org.springframework.web.bind.annotation.PathVariable;
+<i>8</i>&nbsp;import org.springframework.web.bind.annotation.RequestMapping;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;@RequestMapping(&quot;/user-audits&quot;)
+<i>11</i>&nbsp;public interface UserAuditControllerInterface {
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;  @GetMapping(&quot;/user&quot;)
+<i>14</i>&nbsp;  List&lt;UserAuditResponse&gt; getAllUserAuditsForUser(Principal principal);
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;  @GetMapping(&quot;/{id}&quot;)
+<i>17</i>&nbsp;  UserAuditResponse getAuditForUser(@PathVariable(&quot;id&quot;) long id, Principal principal);
+<i>18</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2021-02-28 19:25</div>
+</div>
+</body>
+</html>

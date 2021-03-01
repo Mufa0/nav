@@ -1,0 +1,84 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: GroupControllerInterface</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.five.nav.controller</a> ]
+</div>
+
+<h1>Coverage Summary for Class: GroupControllerInterface (com.five.nav.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">GroupControllerInterface</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.five.nav.controller;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.five.nav.request.GroupRequest;
+<i>4</i>&nbsp;import com.five.nav.response.GroupResponse;
+<i>5</i>&nbsp;import java.security.Principal;
+<i>6</i>&nbsp;import java.util.List;
+<i>7</i>&nbsp;import javax.validation.Valid;
+<i>8</i>&nbsp;import org.springframework.web.bind.annotation.DeleteMapping;
+<i>9</i>&nbsp;import org.springframework.web.bind.annotation.GetMapping;
+<i>10</i>&nbsp;import org.springframework.web.bind.annotation.PathVariable;
+<i>11</i>&nbsp;import org.springframework.web.bind.annotation.PostMapping;
+<i>12</i>&nbsp;import org.springframework.web.bind.annotation.PutMapping;
+<i>13</i>&nbsp;import org.springframework.web.bind.annotation.RequestBody;
+<i>14</i>&nbsp;import org.springframework.web.bind.annotation.RequestMapping;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;@RequestMapping(&quot;/groups&quot;)
+<i>17</i>&nbsp;public interface GroupControllerInterface {
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;  @PostMapping
+<i>20</i>&nbsp;  GroupResponse createGroup(@Valid @RequestBody GroupRequest groupRequest, Principal principal);
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;  @PutMapping(&quot;/{id}&quot;)
+<i>23</i>&nbsp;  GroupResponse updateGroup(@PathVariable(&quot;id&quot;) long id,
+<i>24</i>&nbsp;      @Valid @RequestBody GroupRequest groupRequest,
+<i>25</i>&nbsp;      Principal principal);
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;  @GetMapping(&quot;/user&quot;)
+<i>28</i>&nbsp;  List&lt;GroupResponse&gt; getAllGroupsForUser( Principal principal);
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;  @GetMapping(&quot;/{id}&quot;)
+<i>31</i>&nbsp;  GroupResponse getGroup(@PathVariable(&quot;id&quot;) long id, Principal principal);
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;  @DeleteMapping(&quot;/{id}&quot;)
+<i>34</i>&nbsp;  void deleteGroup(@PathVariable(&quot;id&quot;) long id, Principal principal);
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2021-02-28 19:25</div>
+</div>
+</body>
+</html>
