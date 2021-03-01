@@ -9,7 +9,7 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 @Documented
 @Constraint(validatedBy = AllowedRolesValidator.class)
-@Target( { ElementType.METHOD, ElementType.FIELD })
+@Target( { ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AllowedRolesConstraint {
   String message() default "Provided value is not allowed for a role!";

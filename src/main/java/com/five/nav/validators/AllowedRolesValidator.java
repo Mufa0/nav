@@ -6,8 +6,14 @@ import java.util.stream.Collectors;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-class AllowedRolesValidator implements ConstraintValidator<AllowedRolesConstraint,
+public class AllowedRolesValidator implements ConstraintValidator<AllowedRolesConstraint,
     String> {
+
+  public AllowedRolesValidator(){};
+
+  @Override
+  public void initialize(AllowedRolesConstraint constraintAnnotation) {
+  }
   @Override
   public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
     return s == null || 

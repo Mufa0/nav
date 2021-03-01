@@ -57,10 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             Role.READER.toString())
           .antMatchers(HttpMethod.GET, UNDER_ARTICLES_LOCATION).hasAnyRole(Role.AUTHOR.toString(),
         Role.READER.toString())
-
-          .antMatchers(ARTICLE_AUDITS_LOCATION).hasRole(Role.AUTHOR.toString())
-          .antMatchers(UNDER_ARTICLE_AUDITS_LOCATION).hasRole(Role.AUTHOR.toString())
-
+          .antMatchers(ARTICLE_AUDITS_LOCATION,UNDER_ARTICLE_AUDITS_LOCATION).hasRole(Role.AUTHOR.toString())
         .anyRequest().authenticated();
   }
 
